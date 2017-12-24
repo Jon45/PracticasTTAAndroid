@@ -54,4 +54,5 @@ public interface BusinessInterface {
     public boolean takePhoto();
     public boolean recordAudio();
     public boolean recordVideo();
+    public boolean sendTest(int idEjercicio,int respuesta);
 }
