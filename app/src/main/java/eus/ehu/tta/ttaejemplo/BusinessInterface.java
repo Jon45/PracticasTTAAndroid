@@ -50,9 +50,9 @@ public interface BusinessInterface {
     public abstract boolean login (String userName, String Password);
     public abstract TestTTA getNewTest();
     public abstract String getNewExercise();
-    public boolean uploadFile();
-    public boolean takePhoto();
-    public boolean recordAudio();
-    public boolean recordVideo();
-    public boolean sendTest(int idEjercicio,int respuesta);
+    public abstract boolean uploadFile();
+    public abstract boolean takePhoto();
+    public abstract boolean recordAudio();
+    public abstract boolean recordVideo();
+    public abstract boolean sendTest(int idEjercicio,int respuesta);
 }
