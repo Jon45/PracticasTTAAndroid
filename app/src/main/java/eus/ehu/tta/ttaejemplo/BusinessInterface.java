@@ -10,6 +10,7 @@ public interface BusinessInterface {
     public class TestTTA
     {
         private int correcta;
+        private String pregunta;
         private List<String> opciones;
     }
     public abstract boolean login (String userName, String Password);
