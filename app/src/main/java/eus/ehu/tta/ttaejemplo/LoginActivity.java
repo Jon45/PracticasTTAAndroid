@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Business business;
+    private BusinessInterface business;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

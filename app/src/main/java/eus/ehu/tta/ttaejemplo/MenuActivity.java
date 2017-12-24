@@ -8,7 +8,7 @@ import android.view.View;
 public class MenuActivity extends AppCompatActivity {
 
     public static final String EXTRA_LOGIN = "login";
-    private Business business;
+    private BusinessInterface business;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
