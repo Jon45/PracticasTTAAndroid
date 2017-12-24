@@ -16,7 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" android:label="Evaluación de TTA"></activity>
+        <activity
+            android:name=".MenuActivity"
+            android:label="Evaluación de TTA" />
+        <activity android:name=".newTestActivity" />
+        <activity android:name=".newExerciseActivity"></activity>
     </application>
 
 </manifest>
