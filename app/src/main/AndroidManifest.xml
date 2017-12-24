@@ -19,7 +19,7 @@
         <activity
             android:name=".MenuActivity"
             android:label="@string/menuActivityLabel" />
-        <activity android:name=".newTestActivity" />
+        <activity android:name=".newTestActivity" android:label="@string/newTestActivityLabel"/>
         <activity android:name=".newExerciseActivity"></activity>
     </application>
 

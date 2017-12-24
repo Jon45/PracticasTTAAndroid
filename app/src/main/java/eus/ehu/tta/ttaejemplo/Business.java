@@ -15,6 +15,7 @@ public class Business implements BusinessInterface {
         test.setPregunta("¿Cuál de las siguientes opciones NO se indica en el fichero de manifiesto de la app?");
         test.setOpciones(new ArrayList<String>(Arrays.asList("Versión de la aplicación","Listado de componentes de la aplicación","Opciones del menú de ajustes","Nivel mínimo de la API de Android requerida","Nombre del paquete java de la aplicación")));
         test.setCorrecta(2);
+        test.setAyuda("The manifest describes the <b>components of the application</b>: the activities, services, broadcast receivers, and content providers that ...");
         return test;
     }
 
@@ -45,6 +46,6 @@ public class Business implements BusinessInterface {
 
     @Override
     public boolean sendTest(int idEjercicio,int respuesta) {
-        return true;
+        return respuesta == 2;
     }
 }

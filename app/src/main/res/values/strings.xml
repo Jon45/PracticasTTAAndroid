@@ -11,4 +11,9 @@
     <string name="newExercise">Nuevo ejercicio</string>
     <string name="tracking">Seguimiento</string>
     <string name="menuActivityLabel">Evaluación de TTA</string>
+    <string name="newTestActivityLabel">Nuevo Test</string>
+    <string name="send">Enviar</string>
+    <string name="success">¡Correcto!</string>
+    <string name="failure">¡Has fallado!</string>
+    <string name="getHelp">Ver ayuda</string>
 </resources>

@@ -14,6 +14,7 @@ public interface BusinessInterface {
         private int correcta;
         private String pregunta;
         private List<String> opciones;
+        private String ayuda;
 
         public int getCorrecta() {
             return correcta;
@@ -45,6 +46,14 @@ public interface BusinessInterface {
 
         public void setIdEjercicio(int idEjercicio) {
             this.idEjercicio = idEjercicio;
+        }
+
+        public String getAyuda() {
+            return ayuda;
+        }
+
+        public void setAyuda(String ayuda) {
+            this.ayuda = ayuda;
         }
     }
     public abstract boolean login (String userName, String Password);
