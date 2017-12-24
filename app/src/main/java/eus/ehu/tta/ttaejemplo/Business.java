@@ -42,4 +42,9 @@ public class Business implements BusinessInterface {
     public boolean recordVideo() {
         return false;
     }
+
+    @Override
+    public boolean sendTest(int idEjercicio,int respuesta) {
+        return true;
+    }
 }
