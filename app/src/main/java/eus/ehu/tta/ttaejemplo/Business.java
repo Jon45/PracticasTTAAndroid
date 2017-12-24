@@ -1,3 +1,5 @@
+package eus.ehu.tta.ttaejemplo;
+
 public class Business implements BusinessInterface {
     @Override
     public boolean login(String userName, String Password) {

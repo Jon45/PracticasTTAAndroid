@@ -1,3 +1,5 @@
+package eus.ehu.tta.ttaejemplo;
+
 import java.util.List;
 
 /**
