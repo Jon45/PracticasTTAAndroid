@@ -7,8 +7,10 @@ import java.util.List;
  */
 
 public interface BusinessInterface {
+
     public class TestTTA
     {
+        private int idEjercicio;
         private int correcta;
         private String pregunta;
         private List<String> opciones;
@@ -35,6 +37,14 @@ public interface BusinessInterface {
 
         public void setOpciones(List<String> opciones) {
             this.opciones = opciones;
+        }
+
+        public int getIdEjercicio() {
+            return idEjercicio;
+        }
+
+        public void setIdEjercicio(int idEjercicio) {
+            this.idEjercicio = idEjercicio;
         }
     }
     public abstract boolean login (String userName, String Password);
