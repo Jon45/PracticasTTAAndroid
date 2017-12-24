@@ -5,4 +5,5 @@
     <string name="insertID">Introduce DNI</string>
     <string name="name">Nombre</string>
     <string name="access">Acceder</string>
+    <string name="loginError">Usuario y/o contraseña erroneos</string>
 </resources>
