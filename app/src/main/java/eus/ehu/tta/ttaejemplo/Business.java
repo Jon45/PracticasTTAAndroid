@@ -21,27 +21,27 @@ public class Business implements BusinessInterface {
 
     @Override
     public String getNewExercise() {
-        return null;
+        return "Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android";
     }
 
     @Override
     public boolean uploadFile() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean takePhoto() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean recordAudio() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean recordVideo() {
-        return false;
+        return true;
     }
 
     @Override

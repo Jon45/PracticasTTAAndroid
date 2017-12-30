@@ -16,4 +16,16 @@
     <string name="success">¡Correcto!</string>
     <string name="failure">¡Has fallado!</string>
     <string name="getHelp">Ver ayuda</string>
+    <string name="uploadFile">Subir fichero</string>
+    <string name="takePhoto">Sacar foto</string>
+    <string name="recordAudio">Grabar audio</string>
+    <string name="recordVideo">Grabar vídeo</string>
+    <string name="uploadSuccess">Se ha realizado la subida satisfactoriamente</string>
+    <string name="uploadFail">No se ha podido subir el fichero</string>
+    <string name="takePhotoSuccess">La foto se ha enviado correctamente</string>
+    <string name="takePhotoFail">Ha habido un problema al enviar la foto</string>
+    <string name="recordAudioSuccess">El audio se ha enviado satisfactoriamente</string>
+    <string name="recordAudioFail">No se ha podido enviar el audio</string>
+    <string name="recordVideoSuccess">Se ha enviado el vídeo satisfactoriamente</string>
+    <string name="recordVideoFail">No se ha podido enviar el vídeo</string>
 </resources>
