@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="newTestSendButton" type="id" />
+    <item name="newTestHelpButton" type="id" />
+    <item name="newTestHelpText" type="id" />
+</resources>

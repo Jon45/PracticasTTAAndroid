@@ -7,4 +7,14 @@
     android:id="@+id/newTestLayout"
     android:orientation="vertical"
     tools:context="eus.ehu.tta.ttaejemplo.newTestActivity">
+
+    <TextView
+        android:id="@+id/newTestTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RadioGroup
+        android:id="@+id/newTestRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
