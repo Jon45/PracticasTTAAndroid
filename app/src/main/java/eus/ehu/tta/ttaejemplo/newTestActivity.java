@@ -116,6 +116,9 @@ public class newTestActivity extends AppCompatActivity {
             RadioGroup radioGroup = findViewById(R.id.newTestRadioGroup);
             View correctRadioButton = radioGroup.getChildAt(currentTest.getCorrecta());
             correctRadioButton.setBackgroundColor(getResources().getColor(R.color.green));
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                radioGroup.getChildAt(i).setEnabled(false);
+            }
         }
     }
 
