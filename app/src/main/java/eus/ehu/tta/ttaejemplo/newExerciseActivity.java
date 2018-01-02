@@ -8,7 +8,9 @@ import android.widget.Toast;
 
 public class newExerciseActivity extends AppCompatActivity {
 
+    private static final java.lang.String EXERCISE = "exercise";
     BusinessInterface business;
+    String exercise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +19,21 @@ public class newExerciseActivity extends AppCompatActivity {
         business = new Business();
 
         TextView exerciseText = findViewById(R.id.exerciseText);
-        exerciseText.setText(business.getNewExercise());
+        if (savedInstanceState == null)
+        {
+            exercise = business.getNewExercise();
+        }
+        else
+        {
+            exercise = savedInstanceState.getString(EXERCISE);
+        }
+        exerciseText.setText(exercise);
+    }
+
+    public void onSaveInstanceState (Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(EXERCISE,exercise);
     }
 
     public void uploadFile(View view) {
