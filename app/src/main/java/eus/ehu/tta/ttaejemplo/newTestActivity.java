@@ -1,23 +1,34 @@
 package eus.ehu.tta.ttaejemplo;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.URLUtil;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
+
+import java.io.IOException;
 
 public class newTestActivity extends AppCompatActivity {
     private static final java.lang.String STATE = "state";
     private static final String CURRENT_TEST = "current_test";
     private static final java.lang.String ANSWER_CHOSEN = "answer_chosen";
     private static final java.lang.String IS_HELP_OPEN = "is_help_open";
+    private static final String CURRENT_POSITION = "current_position";
     private static final short TEST_START = 0;
     private static final short RADIO_BUTTON_PRESSED = 1;
     private static final short INCORRECT_ANSWER =2;
@@ -27,6 +38,8 @@ public class newTestActivity extends AppCompatActivity {
     private TestTTA currentTest;
     private int answerChosen = -1;
     private boolean isHelpOpen=false;
+    MediaController.MediaPlayerControl mediaPlayerControl;
+    private int currentPositionPlayer = 0;
     private static final String TAG = newTestActivity.class.getName();
 
     @Override
@@ -40,6 +53,7 @@ public class newTestActivity extends AppCompatActivity {
             currentTest = savedInstanceState.getParcelable(CURRENT_TEST);
             answerChosen = savedInstanceState.getInt(ANSWER_CHOSEN);
             isHelpOpen = savedInstanceState.getBoolean(IS_HELP_OPEN);
+            currentPositionPlayer = savedInstanceState.getInt(CURRENT_POSITION,0);
         }
 
         else
@@ -56,6 +70,10 @@ public class newTestActivity extends AppCompatActivity {
         savedInstanceState.putParcelable(CURRENT_TEST,currentTest);
         savedInstanceState.putInt(ANSWER_CHOSEN,answerChosen);
         savedInstanceState.putBoolean(IS_HELP_OPEN,isHelpOpen);
+        if (mediaPlayerControl != null)
+        {
+            savedInstanceState.putInt(CURRENT_POSITION,mediaPlayerControl.getCurrentPosition());
+        }
     }
 
     private void createViews()
@@ -105,11 +123,14 @@ public class newTestActivity extends AppCompatActivity {
             RadioGroup radioGroup = findViewById(R.id.newTestRadioGroup);
             View radioButton = radioGroup.getChildAt(answerChosen);
             radioButton.setBackgroundColor(getResources().getColor(R.color.red));
-            Button helpButton = new Button(newTestActivity.this);
-            helpButton.setText(R.string.getHelp);
-            helpButton.setOnClickListener(new helpOnClickListener());
-            helpButton.setId(R.id.newTestHelpButton);
-            linearLayout.addView(helpButton);
+            if (currentTest.getAyuda()!=null)
+            {
+                Button helpButton = new Button(newTestActivity.this);
+                helpButton.setText(R.string.getHelp);
+                helpButton.setOnClickListener(new helpOnClickListener());
+                helpButton.setId(R.id.newTestHelpButton);
+                linearLayout.addView(helpButton);
+            }
         }
         if (state == CORRECT_ANSWER || state == INCORRECT_ANSWER)
         {
@@ -140,17 +161,86 @@ public class newTestActivity extends AppCompatActivity {
     }
 
     private void openHelp() {
-        TextView helpTextView = new TextView(newTestActivity.this);
-        helpTextView.setText(Html.fromHtml(currentTest.getAyuda()));
-        helpTextView.setTextColor(Color.BLACK);
-        helpTextView.setId(R.id.newTestHelpText);
+        String mimetype = currentTest.getMimeTypeAyuda();
+        if (mimetype.equals("text/html"))
+        {
+            if (URLUtil.isValidUrl(currentTest.getAyuda()))
+            {
+                openExternalURL();
+            }
+
+            else
+            {
+                createWebView();
+            }
+        }
+        else if(mimetype.startsWith("video"))
+        {
+            addVideoView();
+        }
+
+        else if (mimetype.startsWith("audio"))
+        {
+            addAudioView();
+        }
+    }
+
+    private void openExternalURL() {
+        Intent intent = new Intent (Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(currentTest.getAyuda()));
+        startActivity(intent);
+    }
+
+    private void createWebView() {
+        WebView webView = new WebView(this);
+        webView.loadData(currentTest.getAyuda(),"text/html",null);
+        webView.setBackgroundColor(Color.TRANSPARENT);
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE,null);
+        webView.setId(R.id.newTestHelp);
         LinearLayout linearLayout = findViewById(R.id.newTestLayout);
-        linearLayout.addView(helpTextView);
+        linearLayout.addView(webView);
+    }
+
+    private void addVideoView() {
+        VideoView videoView = new VideoView(this);
+        videoView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
+        videoView.setVideoURI(Uri.parse(currentTest.getAyuda()));
+        videoView.setId(R.id.newTestHelp);
+        MediaController controller = new myMediaController(this);
+        controller.setAnchorView(videoView);
+        videoView.setMediaController(controller);
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.seekTo(currentPositionPlayer);
+            }
+        });
+
+        LinearLayout linearLayout = findViewById(R.id.newTestLayout);
+        linearLayout.addView(videoView);
+
+        mediaPlayerControl = videoView;
+    }
+
+    private void addAudioView() {
+        AudioPlayer audioPlayer = new AudioPlayer(findViewById(R.id.newTestLayout), currentPositionPlayer, new Runnable() {
+            @Override
+            public void run()
+            {
+
+            }
+        });
+        try {
+            audioPlayer.setAudioUri(Uri.parse(currentTest.getAyuda()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayerControl = audioPlayer;
     }
 
     private void closeHelp() {
         LinearLayout linearLayout = findViewById(R.id.newTestLayout);
-        linearLayout.removeView(findViewById(R.id.newTestHelpText));
+        linearLayout.removeView(findViewById(R.id.newTestHelp));
     }
 
     private class radioOnCheckedListener implements RadioGroup.OnCheckedChangeListener
@@ -186,6 +276,26 @@ public class newTestActivity extends AppCompatActivity {
             View sendButton = findViewById(R.id.newTestSendButton);
             linearLayout.removeView(sendButton);
             setStateViews();
+        }
+    }
+
+    private class myMediaController extends MediaController {
+        public myMediaController(Context context) {
+            super(context);
+        }
+
+        @Override
+        public void hide() {
+        }
+
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent event)
+        {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_BACK)
+            {
+                finish();
+            }
+            return super.dispatchKeyEvent(event);
         }
     }
 }

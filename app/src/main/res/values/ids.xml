@@ -2,5 +2,5 @@
 <resources>
     <item name="newTestSendButton" type="id" />
     <item name="newTestHelpButton" type="id" />
-    <item name="newTestHelpText" type="id" />
+    <item name="newTestHelp" type="id" />
 </resources>

@@ -11,10 +11,12 @@
     <TextView
         android:id="@+id/newTestTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="0"/>
 
     <RadioGroup
         android:id="@+id/newTestRadioGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="0"/>
 </LinearLayout>
