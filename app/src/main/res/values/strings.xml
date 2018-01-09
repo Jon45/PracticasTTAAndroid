@@ -30,4 +30,5 @@
     <string name="recordVideoFail">No se ha podido enviar el vídeo</string>
     <string name="no_app">No hay aplicación para realizar esta acción</string>
     <string name="noCamera">Tu dispositivo no tiene camara</string>
+    <string name="noMicrophone">No está disponible el micrófono</string>
 </resources>

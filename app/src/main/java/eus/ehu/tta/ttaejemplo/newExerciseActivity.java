@@ -25,8 +25,11 @@ public class newExerciseActivity extends AppCompatActivity {
     private static final java.lang.String EXERCISE = "exercise";
     private static final int PICTURE_REQUEST_CODE = 0;
     private static final int VIDEO_REQUEST_CODE = 1;
+    private static final int AUDIO_REQUEST_CODE = 2;
     private static final int READ_EXTERNAL_STORAGE_FOR_PHOTO = 0;
     private static final int READ_EXTERNAL_STORAGE_FOR_VIDEO = 1;
+    private static final int READ_EXTERNAL_STORAGE_FOR_AUDIO = 2;
+
     BusinessInterface business;
     String exercise;
     Uri pictureUri;
@@ -79,16 +82,10 @@ public class newExerciseActivity extends AppCompatActivity {
     }
 
     public void onRecordAudioClick(View view) {
-        String text;
-        if (recordAudio())
+        if (checkAndRequestPermissions(this,this,Manifest.permission.READ_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE_FOR_AUDIO))
         {
-            text=getResources().getString(R.string.recordAudioSuccess);;
+            recordAudio();
         }
-        else
-        {
-            text=getResources().getString(R.string.recordAudioFail);
-        }
-        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
 
     public void onRecordVideoClick(View view) {
@@ -119,8 +116,17 @@ public class newExerciseActivity extends AppCompatActivity {
         }
     }
 
-    public boolean recordAudio() {
-        return true;
+    public void recordAudio() {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE)) {
+            Toast.makeText(this, R.string.noMicrophone, Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(intent, AUDIO_REQUEST_CODE);
+            } else {
+                Toast.makeText(this, R.string.no_app, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void recordVideo() {
@@ -148,6 +154,7 @@ public class newExerciseActivity extends AppCompatActivity {
         switch (requestCode)
         {
             case VIDEO_REQUEST_CODE:
+            case AUDIO_REQUEST_CODE:
                 business.uploadFile(data.getData());
                 break;
             case PICTURE_REQUEST_CODE:
@@ -168,6 +175,12 @@ public class newExerciseActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     recordVideo();
+                }
+                break;
+            case READ_EXTERNAL_STORAGE_FOR_AUDIO:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    recordAudio();
                 }
                 break;
         }
