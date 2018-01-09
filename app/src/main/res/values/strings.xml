@@ -28,4 +28,6 @@
     <string name="recordAudioFail">No se ha podido enviar el audio</string>
     <string name="recordVideoSuccess">Se ha enviado el vídeo satisfactoriamente</string>
     <string name="recordVideoFail">No se ha podido enviar el vídeo</string>
+    <string name="no_app">No hay aplicación para realizar esta acción</string>
+    <string name="noCamera">Tu dispositivo no tiene camara</string>
 </resources>

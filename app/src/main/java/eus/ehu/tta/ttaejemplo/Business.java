@@ -1,5 +1,7 @@
 package eus.ehu.tta.ttaejemplo;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -58,7 +60,7 @@ public class Business implements BusinessInterface {
     }
 
     @Override
-    public boolean uploadFile() {
+    public boolean uploadFile(Uri uri) {
         return true;
     }
 
