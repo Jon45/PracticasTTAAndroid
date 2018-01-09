@@ -26,7 +26,7 @@ public class newExerciseActivity extends AppCompatActivity {
     private static final int PICTURE_REQUEST_CODE = 0;
     private static final int VIDEO_REQUEST_CODE = 1;
     private static final int AUDIO_REQUEST_CODE = 2;
-    private static final int READ_EXTERNAL_STORAGE_FOR_PHOTO = 0;
+    private static final int WRITE_EXTERNAL_STORAGE_FOR_PHOTO = 0;
     private static final int READ_EXTERNAL_STORAGE_FOR_VIDEO = 1;
     private static final int READ_EXTERNAL_STORAGE_FOR_AUDIO = 2;
 
@@ -66,7 +66,7 @@ public class newExerciseActivity extends AppCompatActivity {
     }
 
     public void onTakePhotoClick(View view) {
-        if (checkAndRequestPermissions(this,this,Manifest.permission.WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE_FOR_PHOTO))
+        if (checkAndRequestPermissions(this,this,Manifest.permission.WRITE_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE_FOR_PHOTO))
         {
             takePhoto();
         }
@@ -165,7 +165,7 @@ public class newExerciseActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case READ_EXTERNAL_STORAGE_FOR_PHOTO:
+            case WRITE_EXTERNAL_STORAGE_FOR_PHOTO:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     takePhoto();
