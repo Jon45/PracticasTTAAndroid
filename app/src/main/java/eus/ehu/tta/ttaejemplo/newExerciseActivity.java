@@ -39,7 +39,7 @@ public class newExerciseActivity extends AppCompatActivity {
         savedInstanceState.putString(EXERCISE,exercise);
     }
 
-    public void uploadFile(View view) {
+    public void onUploadFileClick(View view) {
         String text;
         if (business.uploadFile())
         {
@@ -52,9 +52,9 @@ public class newExerciseActivity extends AppCompatActivity {
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
 
-    public void takePhoto(View view) {
+    public void onTakePhotoClick(View view) {
         String text;
-        if (business.takePhoto())
+        if (takePhoto())
         {
             text=getResources().getString(R.string.takePhotoSuccess);;
         }
@@ -65,9 +65,9 @@ public class newExerciseActivity extends AppCompatActivity {
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
 
-    public void recordAudio(View view) {
+    public void onRecordAudioClick(View view) {
         String text;
-        if (business.recordAudio())
+        if (recordAudio())
         {
             text=getResources().getString(R.string.recordAudioSuccess);;
         }
@@ -78,9 +78,9 @@ public class newExerciseActivity extends AppCompatActivity {
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
 
-    public void recordVideo(View view) {
+    public void onRecordVideoClick(View view) {
         String text;
-        if (business.recordVideo())
+        if (recordVideo())
         {
             text=getResources().getString(R.string.recordVideoSuccess);;
         }

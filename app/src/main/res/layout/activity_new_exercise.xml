@@ -16,23 +16,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/uploadFile"
-        android:onClick="uploadFile"/>
+        android:onClick="onUploadFileClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/takePhoto"
-        android:onClick="takePhoto"/>
+        android:onClick="onTakePhotoClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/recordAudio"
-        android:onClick="recordAudio"/>
+        android:onClick="onRecordAudioClick"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/recordVideo"
-        android:onClick="recordVideo"/>
+        android:onClick="onRecordVideoClick"/>
 </LinearLayout>
