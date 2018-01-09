@@ -26,6 +26,7 @@ public class newExerciseActivity extends AppCompatActivity {
     private static final int PICTURE_REQUEST_CODE = 0;
     private static final int VIDEO_REQUEST_CODE = 1;
     private static final int AUDIO_REQUEST_CODE = 2;
+    private static final int READ_REQUEST_CODE = 3;
     private static final int WRITE_EXTERNAL_STORAGE_FOR_PHOTO = 0;
     private static final int READ_EXTERNAL_STORAGE_FOR_VIDEO = 1;
     private static final int READ_EXTERNAL_STORAGE_FOR_AUDIO = 2;
@@ -59,10 +60,10 @@ public class newExerciseActivity extends AppCompatActivity {
     }
 
     public void onUploadFileClick(View view) {
-        uploadFile();
-    }
-
-    private void uploadFile() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent,READ_REQUEST_CODE);
     }
 
     public void onTakePhotoClick(View view) {
@@ -155,6 +156,7 @@ public class newExerciseActivity extends AppCompatActivity {
         {
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
+            case READ_REQUEST_CODE:
                 business.uploadFile(data.getData());
                 break;
             case PICTURE_REQUEST_CODE:
