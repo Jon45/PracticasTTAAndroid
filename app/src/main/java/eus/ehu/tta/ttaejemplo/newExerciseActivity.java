@@ -110,7 +110,7 @@ public class newExerciseActivity extends AppCompatActivity {
                     File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
                     try {
                         File file = File.createTempFile("tta",".jpg",dir);
-                        pictureUri = Uri.fromFile(file);
+                        pictureUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".eus.ehu.tta.ttaejemplo.provider", file);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT,pictureUri);
                         startActivityForResult(intent,PICTURE_REQUEST_CODE);
                     } catch (IOException e ) {
