@@ -90,18 +90,15 @@ public class newExerciseActivity extends AppCompatActivity {
         }
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
-
-    @Override
+    
     public boolean takePhoto() {
         return true;
     }
 
-    @Override
     public boolean recordAudio() {
         return true;
     }
 
-    @Override
     public boolean recordVideo() {
         return true;
     }
