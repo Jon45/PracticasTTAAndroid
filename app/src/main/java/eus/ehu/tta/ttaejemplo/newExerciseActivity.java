@@ -24,7 +24,9 @@ public class newExerciseActivity extends AppCompatActivity {
 
     private static final java.lang.String EXERCISE = "exercise";
     private static final int PICTURE_REQUEST_CODE = 0;
+    private static final int VIDEO_REQUEST_CODE = 1;
     private static final int READ_EXTERNAL_STORAGE_FOR_PHOTO = 0;
+    private static final int READ_EXTERNAL_STORAGE_FOR_VIDEO = 1;
     BusinessInterface business;
     String exercise;
     Uri pictureUri;
@@ -90,16 +92,10 @@ public class newExerciseActivity extends AppCompatActivity {
     }
 
     public void onRecordVideoClick(View view) {
-        String text;
-        if (recordVideo())
+        if (checkAndRequestPermissions(this,this,Manifest.permission.READ_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE_FOR_VIDEO))
         {
-            text=getResources().getString(R.string.recordVideoSuccess);;
+            recordVideo();
         }
-        else
-        {
-            text=getResources().getString(R.string.recordVideoFail);
-        }
-        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
     }
 
     public void takePhoto() {
@@ -127,8 +123,21 @@ public class newExerciseActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean recordVideo() {
-        return true;
+    public void recordVideo() {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            Toast.makeText(this, R.string.noCamera, Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+            if (intent.resolveActivity(getPackageManager())!=null)
+            {
+                startActivityForResult(intent,VIDEO_REQUEST_CODE);
+            }
+            else
+            {
+                Toast.makeText(this, R.string.no_app, Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 
     @Override
@@ -138,6 +147,9 @@ public class newExerciseActivity extends AppCompatActivity {
             return;
         switch (requestCode)
         {
+            case VIDEO_REQUEST_CODE:
+                business.uploadFile(data.getData());
+                break;
             case PICTURE_REQUEST_CODE:
                 business.uploadFile(pictureUri);
         }
@@ -150,6 +162,12 @@ public class newExerciseActivity extends AppCompatActivity {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 {
                     takePhoto();
+                }
+                break;
+            case READ_EXTERNAL_STORAGE_FOR_VIDEO:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    recordVideo();
                 }
                 break;
         }
