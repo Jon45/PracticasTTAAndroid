@@ -2,6 +2,7 @@ package eus.ehu.tta.ttaejemplo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -60,7 +61,19 @@ public class newExerciseActivity extends AppCompatActivity {
     }
 
     public void onTakePhotoClick(View view) {
-        takePhoto();
+        if (checkAndRequestPermissions(this,this,Manifest.permission.WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE_FOR_PHOTO))
+        {
+            takePhoto();
+        }
+    }
+
+    private boolean checkAndRequestPermissions(Context context, Activity activity, String permission, int requestCode) {
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    requestCode);
+            return false;
+        }
+        return true;
     }
 
     public void onRecordAudioClick(View view) {
@@ -90,39 +103,25 @@ public class newExerciseActivity extends AppCompatActivity {
     }
 
     public void takePhoto() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    READ_EXTERNAL_STORAGE_FOR_PHOTO);
-        }
-        else
-        {
-            if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
-            {
-                Toast.makeText(this,R.string.noCamera,Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getPackageManager()) != null)
-                {
-                    File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-                    try {
-                        File file = File.createTempFile("tta",".jpg",dir);
-                        pictureUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".eus.ehu.tta.ttaejemplo.provider", file);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT,pictureUri);
-                        startActivityForResult(intent,PICTURE_REQUEST_CODE);
-                    } catch (IOException e ) {
-                        e.printStackTrace();
-                    }
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            Toast.makeText(this, R.string.noCamera, Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                try {
+                    File file = File.createTempFile("tta", ".jpg", dir);
+                    pictureUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".eus.ehu.tta.ttaejemplo.provider", file);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
+                    startActivityForResult(intent, PICTURE_REQUEST_CODE);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                else {
-                    Toast.makeText(this, R.string.no_app, Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(this, R.string.no_app, Toast.LENGTH_SHORT).show();
             }
         }
-     }
+    }
 
     public boolean recordAudio() {
         return true;
