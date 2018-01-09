@@ -1,5 +1,8 @@
 package eus.ehu.tta.ttaejemplo;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -86,5 +89,20 @@ public class newExerciseActivity extends AppCompatActivity {
             text=getResources().getString(R.string.recordVideoFail);
         }
         Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean takePhoto() {
+        return true;
+    }
+
+    @Override
+    public boolean recordAudio() {
+        return true;
+    }
+
+    @Override
+    public boolean recordVideo() {
+        return true;
     }
 }

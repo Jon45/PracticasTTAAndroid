@@ -63,21 +63,6 @@ public class Business implements BusinessInterface {
     }
 
     @Override
-    public boolean takePhoto() {
-        return true;
-    }
-
-    @Override
-    public boolean recordAudio() {
-        return true;
-    }
-
-    @Override
-    public boolean recordVideo() {
-        return true;
-    }
-
-    @Override
     public boolean sendTest(int idEjercicio,int respuesta) {
         return respuesta == 2;
     }
