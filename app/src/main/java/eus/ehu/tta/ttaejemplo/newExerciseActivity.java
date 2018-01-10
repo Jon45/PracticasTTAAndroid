@@ -5,14 +5,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +33,7 @@ public class newExerciseActivity extends AppCompatActivity {
     private static final int WRITE_EXTERNAL_STORAGE_FOR_PHOTO = 0;
     private static final int READ_EXTERNAL_STORAGE_FOR_VIDEO = 1;
     private static final int READ_EXTERNAL_STORAGE_FOR_AUDIO = 2;
+    private static final String TAG = newExerciseActivity.class.getName();
 
     BusinessInterface business;
     String exercise;
@@ -157,10 +161,38 @@ public class newExerciseActivity extends AppCompatActivity {
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
             case READ_REQUEST_CODE:
-                business.uploadFile(data.getData());
+                Uri uri = data.getData();
+                showMetadata(uri);
+                business.uploadFile(uri);
                 break;
             case PICTURE_REQUEST_CODE:
                 business.uploadFile(pictureUri);
+        }
+    }
+
+    private void showMetadata(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                Log.i(TAG,"Display name: " + displayName);
+                int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                String size = null;
+                if (!cursor.isNull(sizeIndex))
+                {
+                    size = cursor.getString(sizeIndex);
+                }
+                else
+                {
+                    size = "unknown";
+                }
+                Log.i(TAG, "Size: " + size);
+            }
+        }
+
+        finally
+        {
+            cursor.close();
         }
     }
 
