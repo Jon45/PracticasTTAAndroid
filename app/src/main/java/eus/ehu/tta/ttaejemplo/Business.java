@@ -48,7 +48,7 @@ public class Business implements BusinessInterface {
     }
 
     @Override
-    public TestTTA getNewTest() {
+    public TestTTA getNewTest(int id) {
         TestTTA test = tests[numTest % tests.length];
         numTest++;
         return test;
