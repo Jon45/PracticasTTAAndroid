@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -46,22 +47,30 @@ public class newTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_test);
-        business = new Business();
-        if (savedInstanceState != null)
-        {
+        business = new BusinessReal(getResources().getString(R.string.baseURL));
+        if (savedInstanceState != null) {
             state = savedInstanceState.getShort(STATE);
             currentTest = savedInstanceState.getParcelable(CURRENT_TEST);
             answerChosen = savedInstanceState.getInt(ANSWER_CHOSEN);
             isHelpOpen = savedInstanceState.getBoolean(IS_HELP_OPEN);
-            currentPositionPlayer = savedInstanceState.getInt(CURRENT_POSITION,0);
+            currentPositionPlayer = savedInstanceState.getInt(CURRENT_POSITION, 0);
         }
-
         else
         {
             state = TEST_START;
-            currentTest = business.getNewTest();
+            new AsyncTask<Void, Void, TestTTA>() {
+                @Override
+                protected TestTTA doInBackground(Void... voids) {
+                    return business.getNewTest(1);
+                }
+
+                @Override
+                protected void onPostExecute(TestTTA testTTA) {
+                    currentTest = testTTA;
+                    createViews();
+                }
+            }.execute();
         }
-        createViews();
     }
 
     public void onSaveInstanceState (Bundle savedInstanceState){
