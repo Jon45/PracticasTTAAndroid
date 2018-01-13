@@ -12,6 +12,11 @@ public class TestTTA implements Parcelable {
     private String pregunta;
     private List<Opcion> opciones;
 
+    public TestTTA ()
+    {
+
+    }
+    
     public TestTTA(int idEjercicio, int correcta, String pregunta, List<Opcion> opciones) {
         this.idEjercicio = idEjercicio;
         this.correcta = correcta;
