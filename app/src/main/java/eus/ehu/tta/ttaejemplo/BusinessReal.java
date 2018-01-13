@@ -20,8 +20,25 @@ public class BusinessReal implements BusinessInterface {
         rest.setHttpBasicAuth("12345678A","tta");
     }
     @Override
-    public boolean login(String userName, String Password) {
-        return true;
+    public boolean login(String dni, String password) {
+        boolean correctLogin = false;
+        try {
+            JSONObject json = rest.getJson(String.format("getStatus?dni=%s",dni));
+            if (json != null)
+            {
+                UserData userData = UserData.getInstance();
+                userData.setUserID(json.getInt("id"));
+                userData.setUserName(json.getString("user"));
+                userData.setPassword(password);
+                correctLogin = true;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return correctLogin;
     }
 
     public TestTTA getNewTest(int id) {

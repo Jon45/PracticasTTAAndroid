@@ -7,7 +7,7 @@ import android.net.Uri;
  */
 
 public interface BusinessInterface {
-    public abstract boolean login (String userName, String Password);
+    public abstract boolean login (String dni, String password);
     public abstract TestTTA getNewTest(int id);
     public abstract String getNewExercise();
     public abstract boolean uploadFile(Uri uri);
