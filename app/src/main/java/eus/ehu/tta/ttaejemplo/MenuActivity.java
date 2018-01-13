@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -14,6 +15,9 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         this.business = new Business();
+        Intent intent = getIntent();
+        TextView welcomeText = findViewById(R.id.welcomeUserTextView);
+        welcomeText.setText(welcomeText.getText() + intent.getStringExtra(EXTRA_LOGIN));
     }
 
     public void newTest(View view)

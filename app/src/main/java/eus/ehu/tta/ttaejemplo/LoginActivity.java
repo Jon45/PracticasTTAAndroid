@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             if (aBoolean.booleanValue())
             {
                 Intent intent = new Intent(LoginActivity.this,MenuActivity.class);
+                intent.putExtra(MenuActivity.EXTRA_LOGIN,UserData.getInstance().getUserName());
                 startActivity(intent);
             }
 
