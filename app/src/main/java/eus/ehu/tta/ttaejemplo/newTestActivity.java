@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import junit.framework.Test;
+
 import java.io.IOException;
 
 public class newTestActivity extends AppCompatActivity {
@@ -78,16 +80,14 @@ public class newTestActivity extends AppCompatActivity {
 
     private void createViews()
     {
-        LinearLayout linearLayout = findViewById(R.id.newTestLayout);
-
         TextView questionView = findViewById(R.id.newTestTextView);
         questionView.setText(currentTest.getPregunta());
         RadioGroup radioGroup = findViewById(R.id.newTestRadioGroup);
         radioGroup.setOnCheckedChangeListener(new radioOnCheckedListener ());
-        for (String opcion : currentTest.getOpciones())
+        for (TestTTA.Opcion opcion : currentTest.getOpciones())
         {
             RadioButton optionView = new RadioButton(this);
-            optionView.setText(opcion);
+            optionView.setText(opcion.getTexto());
             radioGroup.addView(optionView);
         }
         firstTimeSetStateViews();
@@ -123,7 +123,7 @@ public class newTestActivity extends AppCompatActivity {
             RadioGroup radioGroup = findViewById(R.id.newTestRadioGroup);
             View radioButton = radioGroup.getChildAt(answerChosen);
             radioButton.setBackgroundColor(getResources().getColor(R.color.red));
-            if (currentTest.getAyuda()!=null)
+            if (currentTest.getOpciones().get(answerChosen).getAyuda() !=null)
             {
                 Button helpButton = new Button(newTestActivity.this);
                 helpButton.setText(R.string.getHelp);
@@ -161,39 +161,40 @@ public class newTestActivity extends AppCompatActivity {
     }
 
     private void openHelp() {
-        String mimetype = currentTest.getMimeTypeAyuda();
+        TestTTA.Opcion opcion = currentTest.getOpciones().get(answerChosen);
+        String mimetype = opcion.getMimeTypeAyuda();
         if (mimetype.equals("text/html"))
         {
-            if (URLUtil.isValidUrl(currentTest.getAyuda()))
+            if (URLUtil.isValidUrl(opcion.getAyuda()))
             {
-                openExternalURL();
+                openExternalURL(opcion.getAyuda());
             }
 
             else
             {
-                createWebView();
+                createWebView(opcion.getAyuda());
             }
         }
         else if(mimetype.startsWith("video"))
         {
-            addVideoView();
+            addVideoView(opcion.getAyuda());
         }
 
         else if (mimetype.startsWith("audio"))
         {
-            addAudioView();
+            addAudioView(opcion.getAyuda());
         }
     }
 
-    private void openExternalURL() {
+    private void openExternalURL(String ayuda) {
         Intent intent = new Intent (Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(currentTest.getAyuda()));
+        intent.setData(Uri.parse(ayuda));
         startActivity(intent);
     }
 
-    private void createWebView() {
+    private void createWebView(String ayuda) {
         WebView webView = new WebView(this);
-        webView.loadData(currentTest.getAyuda(),"text/html",null);
+        webView.loadData(ayuda,"text/html",null);
         webView.setBackgroundColor(Color.TRANSPARENT);
         webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE,null);
         webView.setId(R.id.newTestHelp);
@@ -201,10 +202,10 @@ public class newTestActivity extends AppCompatActivity {
         linearLayout.addView(webView);
     }
 
-    private void addVideoView() {
+    private void addVideoView(String ayuda) {
         VideoView videoView = new VideoView(this);
         videoView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1));
-        videoView.setVideoURI(Uri.parse(currentTest.getAyuda()));
+        videoView.setVideoURI(Uri.parse(ayuda));
         videoView.setId(R.id.newTestHelp);
         MediaController controller = new myMediaController(this);
         controller.setAnchorView(videoView);
@@ -222,7 +223,7 @@ public class newTestActivity extends AppCompatActivity {
         mediaPlayerControl = videoView;
     }
 
-    private void addAudioView() {
+    private void addAudioView(String ayuda) {
         AudioPlayer audioPlayer = new AudioPlayer(findViewById(R.id.newTestLayout), currentPositionPlayer, new Runnable() {
             @Override
             public void run()
@@ -231,7 +232,7 @@ public class newTestActivity extends AppCompatActivity {
             }
         });
         try {
-            audioPlayer.setAudioUri(Uri.parse(currentTest.getAyuda()));
+            audioPlayer.setAudioUri(Uri.parse(ayuda));
         } catch (IOException e) {
             e.printStackTrace();
         }

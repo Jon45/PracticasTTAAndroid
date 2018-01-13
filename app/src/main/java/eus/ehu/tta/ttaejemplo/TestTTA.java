@@ -3,23 +3,20 @@ package eus.ehu.tta.ttaejemplo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestTTA implements Parcelable {
     private int idEjercicio;
     private int correcta;
     private String pregunta;
-    private List<String> opciones;
-    private String ayuda;
-    private String mimeTypeAyuda;
+    private List<Opcion> opciones;
 
-    public TestTTA(int idEjercicio, int correcta, String pregunta, List<String> opciones, String ayuda, String mimeTypeAyuda) {
+    public TestTTA(int idEjercicio, int correcta, String pregunta, List<Opcion> opciones) {
         this.idEjercicio = idEjercicio;
         this.correcta = correcta;
         this.pregunta = pregunta;
         this.opciones = opciones;
-        this.ayuda = ayuda;
-        this.mimeTypeAyuda = mimeTypeAyuda;
     }
 
     public int getCorrecta() {
@@ -38,11 +35,11 @@ public class TestTTA implements Parcelable {
         this.pregunta = pregunta;
     }
 
-    public List<String> getOpciones() {
+    public List<Opcion> getOpciones() {
         return opciones;
     }
 
-    public void setOpciones(List<String> opciones) {
+    public void setOpciones(List<Opcion> opciones) {
         this.opciones = opciones;
     }
 
@@ -54,20 +51,35 @@ public class TestTTA implements Parcelable {
         this.idEjercicio = idEjercicio;
     }
 
-    public String getAyuda() {
-        return ayuda;
-    }
+    public class Opcion {
+        private String texto;
 
-    public void setAyuda(String ayuda) {
-        this.ayuda = ayuda;
-    }
+        public String getTexto() {
+            return texto;
+        }
 
-    public String getMimeTypeAyuda() {
-        return mimeTypeAyuda;
-    }
+        public void setTexto(String texto) {
+            this.texto = texto;
+        }
 
-    public void setMimeTypeAyuda(String mimeTypeAyuda) {
-        this.mimeTypeAyuda = mimeTypeAyuda;
+        public String getAyuda() {
+            return ayuda;
+        }
+
+        public void setAyuda(String ayuda) {
+            this.ayuda = ayuda;
+        }
+
+        public String getMimeTypeAyuda() {
+            return mimeTypeAyuda;
+        }
+
+        public void setMimeTypeAyuda(String mimeTypeAyuda) {
+            this.mimeTypeAyuda = mimeTypeAyuda;
+        }
+
+        private String ayuda;
+        private String mimeTypeAyuda;
     }
 
     @Override
@@ -80,24 +92,18 @@ public class TestTTA implements Parcelable {
         dest.writeInt(this.idEjercicio);
         dest.writeInt(this.correcta);
         dest.writeString(this.pregunta);
-        dest.writeStringList(this.opciones);
-        dest.writeString(this.ayuda);
-        dest.writeString(this.mimeTypeAyuda);
-    }
-
-    public TestTTA() {
+        dest.writeList(this.opciones);
     }
 
     protected TestTTA(Parcel in) {
         this.idEjercicio = in.readInt();
         this.correcta = in.readInt();
         this.pregunta = in.readString();
-        this.opciones = in.createStringArrayList();
-        this.ayuda = in.readString();
-        this.mimeTypeAyuda = in.readString();
+        this.opciones = new ArrayList<Opcion>();
+        in.readList(this.opciones, Opcion.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<TestTTA> CREATOR = new Parcelable.Creator<TestTTA>() {
+    public static final Creator<TestTTA> CREATOR = new Creator<TestTTA>() {
         @Override
         public TestTTA createFromParcel(Parcel source) {
             return new TestTTA(source);
