@@ -49,7 +49,10 @@ public class newTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_test);
-        business = new BusinessReal(getResources().getString(R.string.baseURL));
+        UserData userData = UserData.getInstance();
+        String dni = userData.getDni();
+        String password = userData.getPassword();
+        business = new BusinessReal(getResources().getString(R.string.baseURL),dni,password);
         if (savedInstanceState != null)
         {
             state = savedInstanceState.getShort(STATE);

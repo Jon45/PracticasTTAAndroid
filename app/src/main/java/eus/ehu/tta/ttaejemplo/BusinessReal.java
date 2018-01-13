@@ -17,11 +17,22 @@ public class BusinessReal implements BusinessInterface {
     public BusinessReal(String baseURI)
     {
         rest = new RestClient(baseURI);
-        rest.setHttpBasicAuth("12345678A","tta");
     }
+
+    public BusinessReal(String baseURI, String dni, String password)
+    {
+        this(baseURI);
+        setAuthentication(dni,password);
+    }
+
+    private void setAuthentication(String dni, String password) {
+        rest.setHttpBasicAuth(dni,password);
+    }
+
     @Override
     public boolean login(String dni, String password) {
         boolean correctLogin = false;
+        rest.setHttpBasicAuth(dni,password);
         try {
             JSONObject json = rest.getJson(String.format("getStatus?dni=%s",dni));
             if (json != null)
