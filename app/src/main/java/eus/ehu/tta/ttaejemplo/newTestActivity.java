@@ -61,7 +61,7 @@ public class newTestActivity extends AppCompatActivity {
         else
         {
             state = TEST_START;
-            currentTest = business.getNewTest();
+            currentTest = business.getNewTest(1);
         }
         createViews();
     }
