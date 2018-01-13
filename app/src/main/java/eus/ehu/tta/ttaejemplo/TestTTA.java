@@ -16,7 +16,7 @@ public class TestTTA implements Parcelable {
     {
 
     }
-    
+
     public TestTTA(int idEjercicio, int correcta, String pregunta, List<Opcion> opciones) {
         this.idEjercicio = idEjercicio;
         this.correcta = correcta;
@@ -54,37 +54,6 @@ public class TestTTA implements Parcelable {
 
     public void setIdEjercicio(int idEjercicio) {
         this.idEjercicio = idEjercicio;
-    }
-
-    public class Opcion {
-        private String texto;
-
-        public String getTexto() {
-            return texto;
-        }
-
-        public void setTexto(String texto) {
-            this.texto = texto;
-        }
-
-        public String getAyuda() {
-            return ayuda;
-        }
-
-        public void setAyuda(String ayuda) {
-            this.ayuda = ayuda;
-        }
-
-        public String getMimeTypeAyuda() {
-            return mimeTypeAyuda;
-        }
-
-        public void setMimeTypeAyuda(String mimeTypeAyuda) {
-            this.mimeTypeAyuda = mimeTypeAyuda;
-        }
-
-        private String ayuda;
-        private String mimeTypeAyuda;
     }
 
     @Override

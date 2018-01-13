@@ -84,7 +84,7 @@ public class newTestActivity extends AppCompatActivity {
         questionView.setText(currentTest.getPregunta());
         RadioGroup radioGroup = findViewById(R.id.newTestRadioGroup);
         radioGroup.setOnCheckedChangeListener(new radioOnCheckedListener ());
-        for (TestTTA.Opcion opcion : currentTest.getOpciones())
+        for (Opcion opcion : currentTest.getOpciones())
         {
             RadioButton optionView = new RadioButton(this);
             optionView.setText(opcion.getTexto());
@@ -161,7 +161,7 @@ public class newTestActivity extends AppCompatActivity {
     }
 
     private void openHelp() {
-        TestTTA.Opcion opcion = currentTest.getOpciones().get(answerChosen);
+        Opcion opcion = currentTest.getOpciones().get(answerChosen);
         String mimetype = opcion.getMimeTypeAyuda();
         if (mimetype.equals("text/html"))
         {
