@@ -11,7 +11,7 @@ public class Business implements BusinessInterface {
     private static int numTest = 0;
     public Business ()
     {
-        tests = new TestTTA[] {
+        /*tests = new TestTTA[] {
                 new TestTTA(
                         1,
                         2,
@@ -40,7 +40,7 @@ public class Business implements BusinessInterface {
                         new ArrayList<String>(Arrays.asList("Versión de la aplicación","Listado de componentes de la aplicación","Opciones del menú de ajustes","Nivel mínimo de la API de Android requerida","Nombre del paquete java de la aplicación")),
                         "http://techslides.com/demos/sample-videos/small.mp4",
                         "audio/mp4")
-        };
+        };*/
     }
     @Override
     public boolean login(String userName, String Password) {
