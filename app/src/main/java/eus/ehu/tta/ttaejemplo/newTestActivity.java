@@ -266,21 +266,7 @@ public class newTestActivity extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
-            if (business.sendTest(currentTest.getIdEjercicio(),answerChosen))
-            {
-                state = CORRECT_ANSWER;
-                Toast.makeText(newTestActivity.this,R.string.success, Toast.LENGTH_SHORT).show();
-            }
-
-            else
-            {
-                state = INCORRECT_ANSWER;
-                Toast.makeText(newTestActivity.this,R.string.failure, Toast.LENGTH_SHORT).show();
-            }
-            LinearLayout linearLayout = findViewById(R.id.newTestLayout);
-            View sendButton = findViewById(R.id.newTestSendButton);
-            linearLayout.removeView(sendButton);
-            setStateViews();
+            new sendTestTask().execute();
         }
     }
 
@@ -317,6 +303,51 @@ public class newTestActivity extends AppCompatActivity {
             super.onPostExecute(testTTA);
             currentTest = testTTA;
             createViews();
+        }
+    }
+
+    private class sendTestTask extends AsyncTask<Void,Void,Boolean>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Button sendButton = findViewById(R.id.newTestSendButton);
+            sendButton.setEnabled(false);
+            setRadioButtonsEnabled(false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            int userId = UserData.getInstance().getUserID();
+            return business.sendTest(userId,answerChosen);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean.booleanValue())
+            {
+                state = CORRECT_ANSWER;
+                Toast.makeText(newTestActivity.this,R.string.success, Toast.LENGTH_SHORT).show();
+            }
+
+            else
+            {
+                state = INCORRECT_ANSWER;
+                Toast.makeText(newTestActivity.this,R.string.failure, Toast.LENGTH_SHORT).show();
+            }
+            LinearLayout linearLayout = findViewById(R.id.newTestLayout);
+            View sendButton = findViewById(R.id.newTestSendButton);
+            linearLayout.removeView(sendButton);
+            setStateViews();
+        }
+    }
+
+    private void setRadioButtonsEnabled(boolean enabled)
+    {
+        RadioGroup radioGroup = findViewById(R.id.newTestRadioGroup);
+        for (int i = 0; i < radioGroup.getChildCount(); i++) {
+            radioGroup.getChildAt(i).setEnabled(enabled);
         }
     }
 }

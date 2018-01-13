@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +101,20 @@ public class BusinessReal implements BusinessInterface {
 
     @Override
     public boolean sendTest(int userId,int respuesta) {
-        return true;
+        JSONObject jsonObject = new JSONObject();
+        boolean isTestCorrect = false;
+        try {
+            jsonObject.put("userId",userId);
+            jsonObject.put("choiceId",respuesta);
+            int statusCode = rest.postJson(jsonObject,"postChoice");
+            if (statusCode == HttpURLConnection.HTTP_OK)
+            {
+                isTestCorrect = true;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isTestCorrect;
     }
 }
