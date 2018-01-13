@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -48,7 +49,7 @@ public class newTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_test);
-        business = new Business();
+        business = new BusinessReal(getResources().getString(R.string.baseURL));
         if (savedInstanceState != null)
         {
             state = savedInstanceState.getShort(STATE);
@@ -56,14 +57,14 @@ public class newTestActivity extends AppCompatActivity {
             answerChosen = savedInstanceState.getInt(ANSWER_CHOSEN);
             isHelpOpen = savedInstanceState.getBoolean(IS_HELP_OPEN);
             currentPositionPlayer = savedInstanceState.getInt(CURRENT_POSITION,0);
+            createViews();
         }
 
         else
         {
             state = TEST_START;
-            currentTest = business.getNewTest(1);
+            new getNewTestTask().execute();
         }
-        createViews();
     }
 
     public void onSaveInstanceState (Bundle savedInstanceState){
@@ -297,6 +298,22 @@ public class newTestActivity extends AppCompatActivity {
                 finish();
             }
             return super.dispatchKeyEvent(event);
+        }
+    }
+
+
+    public class getNewTestTask extends AsyncTask<Void,Void,TestTTA>
+    {
+        @Override
+        protected TestTTA doInBackground(Void... voids) {
+            return business.getNewTest(1);
+        }
+
+        @Override
+        protected void onPostExecute(TestTTA testTTA) {
+            super.onPostExecute(testTTA);
+            currentTest = testTTA;
+            createViews();
         }
     }
 }
