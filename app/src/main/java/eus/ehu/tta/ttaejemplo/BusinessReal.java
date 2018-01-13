@@ -41,6 +41,7 @@ public class BusinessReal implements BusinessInterface {
                 userData.setUserID(json.getInt("id"));
                 userData.setUserName(json.getString("user"));
                 userData.setPassword(password);
+                userData.setDni(dni);
                 correctLogin = true;
             }
 
