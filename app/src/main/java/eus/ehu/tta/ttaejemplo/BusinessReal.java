@@ -99,7 +99,7 @@ public class BusinessReal implements BusinessInterface {
     }
 
     @Override
-    public boolean sendTest(int idEjercicio,int respuesta) {
+    public boolean sendTest(int userId,int respuesta) {
         return true;
     }
 }

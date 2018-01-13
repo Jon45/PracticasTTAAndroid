@@ -11,5 +11,5 @@ public interface BusinessInterface {
     public abstract TestTTA getNewTest(int id);
     public abstract String getNewExercise();
     public abstract boolean uploadFile(Uri uri);
-    public abstract boolean sendTest(int idEjercicio,int respuesta);
+    public abstract boolean sendTest(int userId,int respuesta);
 }
