@@ -333,21 +333,32 @@ public class newTestActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+
             if (aBoolean.booleanValue())
             {
-                state = CORRECT_ANSWER;
-                Toast.makeText(newTestActivity.this,R.string.success, Toast.LENGTH_SHORT).show();
+                Toast.makeText(newTestActivity.this,"Se ha enviado la respuesta correctamente",Toast.LENGTH_SHORT);
+                if (currentTest.getCorrecta() == answerChosen) {
+                    state = CORRECT_ANSWER;
+                    Toast.makeText(newTestActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    state = INCORRECT_ANSWER;
+                    Toast.makeText(newTestActivity.this,R.string.failure, Toast.LENGTH_SHORT).show();
+                }
+                LinearLayout linearLayout = findViewById(R.id.newTestLayout);
+                View sendButton = findViewById(R.id.newTestSendButton);
+                linearLayout.removeView(sendButton);
+                setStateViews();
             }
 
             else
             {
-                state = INCORRECT_ANSWER;
-                Toast.makeText(newTestActivity.this,R.string.failure, Toast.LENGTH_SHORT).show();
+                Toast.makeText(newTestActivity.this,"Error al enviar la respuesta",Toast.LENGTH_SHORT).show();
+                Button sendButton = findViewById(R.id.newTestSendButton);
+                sendButton.setEnabled(true);
+                setRadioButtonsEnabled(true);
             }
-            LinearLayout linearLayout = findViewById(R.id.newTestLayout);
-            View sendButton = findViewById(R.id.newTestSendButton);
-            linearLayout.removeView(sendButton);
-            setStateViews();
         }
     }
 
