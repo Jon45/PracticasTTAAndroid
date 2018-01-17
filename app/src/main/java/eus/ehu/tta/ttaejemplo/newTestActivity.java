@@ -73,7 +73,7 @@ public class newTestActivity extends AppCompatActivity {
     protected void onStop ()
     {
         super.onStop();
-        if (mediaPlayerControl != null)
+        if (mediaPlayerControl != null && mediaPlayerControl.isPlaying())
         {
             mediaPlayerControl.pause();
         }
