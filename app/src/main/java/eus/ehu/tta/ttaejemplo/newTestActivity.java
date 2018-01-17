@@ -70,6 +70,14 @@ public class newTestActivity extends AppCompatActivity {
         }
     }
 
+    protected void onStop ()
+    {
+        super.onStop();
+        if (mediaPlayerControl != null)
+        {
+            mediaPlayerControl.pause();
+        }
+    }
     public void onSaveInstanceState (Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putShort(STATE,state);
