@@ -39,7 +39,7 @@ public class newExerciseActivity extends AppCompatActivity {
     private static final String TAG = newExerciseActivity.class.getName();
 
     BusinessInterface business;
-    String exercise;
+    String exercise = null;
     Uri pictureUri;
     String pathUploadFile;
 
@@ -54,14 +54,13 @@ public class newExerciseActivity extends AppCompatActivity {
         business = new BusinessReal(getResources().getString(R.string.baseURL),dni,password);
 
         TextView exerciseText = findViewById(R.id.exerciseText);
-        if (savedInstanceState == null)
+        if (savedInstanceState == null || (exercise=savedInstanceState.getString(EXERCISE))==null)
         {
             new getExerciseTask().execute(1);
             exerciseText.setText(R.string.loadingExercise);
         }
         else
         {
-            exercise = savedInstanceState.getString(EXERCISE);
             exerciseText.setText(exercise);
         }
 
@@ -290,8 +289,9 @@ public class newExerciseActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            exercise = s;
             TextView exerciseText = findViewById(R.id.exerciseText);
-            exerciseText.setText(s);
+            exerciseText.setText(exercise);
         }
     }
 }
