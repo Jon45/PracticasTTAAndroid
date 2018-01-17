@@ -32,4 +32,5 @@
     <string name="noCamera">Tu dispositivo no tiene camara</string>
     <string name="noMicrophone">No está disponible el micrófono</string>
     <string name="baseURL">http://u017633.ehu.eus:28080/ServidorTta/rest/tta</string>
+    <string name="loadingExercise">Cargando ejercicio ...</string>
 </resources>

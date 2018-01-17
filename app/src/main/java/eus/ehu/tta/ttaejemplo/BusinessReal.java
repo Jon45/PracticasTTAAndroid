@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,13 +91,30 @@ public class BusinessReal implements BusinessInterface {
     }
 
     @Override
-    public String getNewExercise() {
-        return "";
+    public String getNewExercise(int id) {
+        String exercise = null;
+        try {
+            JSONObject json = rest.getJson(String.format("getExercise?id=%d",id));
+            exercise = json.getString("wording");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return exercise;
     }
 
     @Override
-    public boolean uploadFile(Uri uri) {
-        return true;
+    public boolean uploadFile(String path, InputStream is, String filename) {
+        boolean result = false;
+        try {
+            int code = rest.postFile(path,is,filename);
+            if (code == HttpURLConnection.HTTP_NO_CONTENT)
+            {
+                result = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -107,7 +125,7 @@ public class BusinessReal implements BusinessInterface {
             jsonObject.put("userId",userId);
             jsonObject.put("choiceId",respuesta);
             int statusCode = rest.postJson(jsonObject,"postChoice");
-            if (statusCode == HttpURLConnection.HTTP_OK)
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT)
             {
                 isTestCorrect = true;
             }

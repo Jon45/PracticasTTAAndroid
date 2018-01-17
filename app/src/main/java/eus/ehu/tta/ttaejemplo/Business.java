@@ -2,6 +2,7 @@ package eus.ehu.tta.ttaejemplo;
 
 import android.net.Uri;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,12 +56,12 @@ public class Business implements BusinessInterface {
     }
 
     @Override
-    public String getNewExercise() {
+    public String getNewExercise(int id) {
         return "Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android";
     }
 
     @Override
-    public boolean uploadFile(Uri uri) {
+    public boolean uploadFile(String path, InputStream is, String filename) {
         return true;
     }
 

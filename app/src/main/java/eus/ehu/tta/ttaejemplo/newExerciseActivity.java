@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -21,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class newExerciseActivity extends AppCompatActivity {
 
@@ -38,23 +41,30 @@ public class newExerciseActivity extends AppCompatActivity {
     BusinessInterface business;
     String exercise;
     Uri pictureUri;
+    String pathUploadFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_exercise);
-        business = new Business();
+        UserData userData = UserData.getInstance();
+        String dni = userData.getDni();
+        String password = userData.getPassword();
+        pathUploadFile = String.format("postExercise?user=%d&id=%d",userData.getUserID(),1);
+        business = new BusinessReal(getResources().getString(R.string.baseURL),dni,password);
 
         TextView exerciseText = findViewById(R.id.exerciseText);
         if (savedInstanceState == null)
         {
-            exercise = business.getNewExercise();
+            new getExerciseTask().execute(1);
+            exerciseText.setText(R.string.loadingExercise);
         }
         else
         {
             exercise = savedInstanceState.getString(EXERCISE);
+            exerciseText.setText(exercise);
         }
-        exerciseText.setText(exercise);
+
     }
 
     public void onSaveInstanceState (Bundle savedInstanceState)
@@ -154,6 +164,10 @@ public class newExerciseActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        Uri uri;
+        String filename;
+        postFileParameters parameters;
+
         if (resultCode != Activity.RESULT_OK)
             return;
         switch (requestCode)
@@ -161,20 +175,32 @@ public class newExerciseActivity extends AppCompatActivity {
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
             case READ_REQUEST_CODE:
-                Uri uri = data.getData();
-                showMetadata(uri);
-                business.uploadFile(uri);
+                uri = data.getData();
+                filename = showMetadata(uri);
+                try {
+                    parameters = new postFileParameters(pathUploadFile,getContentResolver().openInputStream(uri),filename);
+                    new postFileTask().execute(parameters);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 break;
             case PICTURE_REQUEST_CODE:
-                business.uploadFile(pictureUri);
+                try {
+                    filename = showMetadata(pictureUri);
+                    parameters = new postFileParameters(pathUploadFile,getContentResolver().openInputStream(pictureUri),filename);
+                    new postFileTask().execute(parameters);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
-    private void showMetadata(Uri uri) {
+    private String showMetadata(Uri uri) {
         Cursor cursor = getContentResolver().query(uri,null,null,null,null);
+        String displayName = null;
         try {
             if (cursor != null && cursor.moveToFirst()) {
-                String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 Log.i(TAG,"Display name: " + displayName);
                 int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
                 String size = null;
@@ -194,6 +220,7 @@ public class newExerciseActivity extends AppCompatActivity {
         {
             cursor.close();
         }
+        return displayName;
     }
 
     @Override
@@ -217,6 +244,54 @@ public class newExerciseActivity extends AppCompatActivity {
                     recordAudio();
                 }
                 break;
+        }
+    }
+
+    private class postFileParameters
+    {
+        private String path;
+        private InputStream is;
+        private String filename;
+
+        public postFileParameters(String path, InputStream is, String filename) {
+            this.path = path;
+            this.is = is;
+            this.filename = filename;
+        }
+    }
+    public class postFileTask extends AsyncTask<postFileParameters,Void,Boolean>
+    {
+        @Override
+        protected Boolean doInBackground(postFileParameters... postFileParameters) {
+            postFileParameters parameters = postFileParameters[0];
+            return business.uploadFile(parameters.path,parameters.is,parameters.filename);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (result)
+            {
+                Toast.makeText(newExerciseActivity.this,R.string.uploadSuccess,Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(newExerciseActivity.this,R.string.uploadFail,Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class getExerciseTask extends AsyncTask<Integer,Void,String>{
+        @Override
+        protected String doInBackground(Integer... integers) {
+            return business.getNewExercise(integers[0].intValue());
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            TextView exerciseText = findViewById(R.id.exerciseText);
+            exerciseText.setText(s);
         }
     }
 }
