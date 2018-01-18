@@ -125,7 +125,7 @@ public class BusinessReal implements BusinessInterface {
             jsonObject.put("userId",userId);
             jsonObject.put("choiceId",respuesta);
             int statusCode = rest.postJson(jsonObject,"postChoice");
-            //if (statusCode == HttpURLConnection.HTTP_NO_CONTENT)
+            if (statusCode == HttpURLConnection.HTTP_NO_CONTENT)
             {
                 isTestCorrect = true;
             }

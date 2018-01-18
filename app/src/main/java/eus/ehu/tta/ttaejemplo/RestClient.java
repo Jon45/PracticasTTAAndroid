@@ -118,6 +118,7 @@ public class RestClient {
             conn.setDoOutput(true);
             try (PrintWriter pw = new PrintWriter(conn.getOutputStream())) {
                 pw.print(json.toString());
+                pw.close();
                 return conn.getResponseCode();
             }
         } finally {
