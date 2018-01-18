@@ -74,7 +74,13 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     @Override
     public boolean isPlaying() {
-        return player.isPlaying();
+        if (player!=null) {
+            return player.isPlaying();
+        }
+        else
+        {
+            return false;
+        }
     }
 
     @Override
